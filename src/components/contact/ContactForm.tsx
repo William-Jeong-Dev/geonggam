@@ -145,7 +145,20 @@ export function ContactForm() {
     setIsSubmitting(true);
 
     try {
+      // Supabase에 저장 (어드민에서 확인 가능)
       await inquiryApi.create(formData);
+
+      // mailto: 링크로 이메일 클라이언트 열기
+      const subject = encodeURIComponent(`[정감공간 문의] ${formData.name}님의 문의`);
+      const body = encodeURIComponent(
+        `이름: ${formData.name}\n` +
+        `이메일: ${formData.email}\n` +
+        `연락처: ${formData.phone}\n\n` +
+        `문의 내용:\n${formData.message}`
+      );
+
+      window.location.href = `mailto:jeonggam24@naver.com?subject=${subject}&body=${body}`;
+
       setIsSubmitted(true);
     } catch (error) {
       console.error('Error submitting form:', error);
