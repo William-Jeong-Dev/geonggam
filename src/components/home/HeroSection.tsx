@@ -2,9 +2,11 @@ import { useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
 import { Button } from '../common/Button';
 import { theme } from '../../styles/GlobalStyles';
 import { HeroSlide } from '../../types';
+import { siteSettingsApi } from '../../lib/supabase';
 
 interface HeroSectionProps {
   slides?: HeroSlide[];
@@ -166,6 +168,17 @@ export function HeroSection({ slides = [] }: HeroSectionProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const hasSlides = slides.length > 0;
 
+  const { data: buttonSizeData } = useQuery({
+    queryKey: ['siteSettings', 'buttonSize'],
+    queryFn: async () => {
+      const setting = await siteSettingsApi.getByKey('hero_button_size');
+      return setting?.value ? parseFloat(setting.value) : 1.8;
+    },
+    staleTime: 1000 * 60 * 10,
+  });
+
+  const buttonSize = buttonSizeData || 1.8;
+
   const nextSlide = useCallback(() => {
     if (slides.length > 1) {
       setCurrentIndex((prev) => (prev + 1) % slides.length);
@@ -241,12 +254,28 @@ export function HeroSection({ slides = [] }: HeroSectionProps) {
           transition={{ duration: 0.8, delay: 0.6 }}
         >
           <Link to="/portfolio">
-            <Button $variant={hasSlides ? 'outline' : 'primary'} $size="large" style={hasSlides ? { borderColor: 'white', color: 'white' } : {}}>
+            <Button
+              $variant={hasSlides ? 'outline' : 'primary'}
+              $size="large"
+              style={{
+                ...(hasSlides ? { borderColor: 'white', color: 'white' } : {}),
+                padding: `${buttonSize * 0.5}rem ${buttonSize * 1.2}rem`,
+                fontSize: `${buttonSize * 0.55}rem`,
+              }}
+            >
               프로젝트 보기
             </Button>
           </Link>
           <Link to="/contact">
-            <Button $variant="outline" $size="large" style={hasSlides ? { borderColor: 'white', color: 'white' } : {}}>
+            <Button
+              $variant="outline"
+              $size="large"
+              style={{
+                ...(hasSlides ? { borderColor: 'white', color: 'white' } : {}),
+                padding: `${buttonSize * 0.5}rem ${buttonSize * 1.2}rem`,
+                fontSize: `${buttonSize * 0.55}rem`,
+              }}
+            >
               문의하기
             </Button>
           </Link>

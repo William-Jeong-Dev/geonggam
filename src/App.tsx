@@ -19,6 +19,8 @@ import { HeroSlideManage } from './pages/admin/HeroSlideManage';
 import { PortfolioManage } from './pages/admin/PortfolioManage';
 import { InquiryManage } from './pages/admin/InquiryManage';
 import { SiteSettingsManage } from './pages/admin/SiteSettingsManage';
+import { CategoryManage } from './pages/admin/CategoryManage';
+import { AboutManage } from './pages/admin/AboutManage';
 
 // Error Boundary
 interface ErrorBoundaryState {
@@ -102,6 +104,8 @@ function App() {
             <Route path="/admin/portfolio" element={<PortfolioManage />} />
             <Route path="/admin/inquiries" element={<InquiryManage />} />
             <Route path="/admin/settings" element={<SiteSettingsManage />} />
+            <Route path="/admin/categories" element={<CategoryManage />} />
+            <Route path="/admin/about" element={<AboutManage />} />
           </Route>
           </Routes>
         </BrowserRouter>

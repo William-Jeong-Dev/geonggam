@@ -55,3 +55,21 @@ export interface SiteSettings {
   value: string;
   updated_at: string;
 }
+
+// 카테고리 타입
+export interface Category {
+  id: string;
+  name: string;
+  display_order: number;
+  created_at: string;
+}
+
+// 소개 페이지 콘텐츠 타입
+export interface AboutContent {
+  id: string;
+  section: string;
+  title: string;
+  content: string;
+  display_order: number;
+  updated_at: string;
+}

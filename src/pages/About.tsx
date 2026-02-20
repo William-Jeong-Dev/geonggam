@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
+import { useQuery } from '@tanstack/react-query';
 import { theme } from '../styles/GlobalStyles';
+import { aboutContentApi } from '../lib/supabase';
 
 const PageWrapper = styled.div`
   padding-top: 80px;
@@ -62,6 +64,7 @@ const IntroText = styled(motion.p)`
   text-align: center;
   max-width: 800px;
   margin: 0 auto 4rem;
+  white-space: pre-wrap;
 `;
 
 const ValuesGrid = styled.div`
@@ -158,7 +161,8 @@ const StepDescription = styled.p`
   line-height: 1.6;
 `;
 
-const values = [
+// 기본 데이터 (DB에 데이터가 없을 때 사용)
+const defaultValues = [
   {
     number: '01',
     title: '감성적 디자인',
@@ -176,7 +180,7 @@ const values = [
   },
 ];
 
-const processes = [
+const defaultProcesses = [
   {
     number: '01',
     title: '상담',
@@ -199,7 +203,43 @@ const processes = [
   },
 ];
 
+const defaultIntro = `주식회사 정감공간은 사람들의 일상에 따뜻함을 전하는 감성적인 공간 인테리어 디자인을 추구합니다.
+
+우리는 단순히 보기 좋은 공간이 아닌, 그 공간에서 생활하는 사람들의 이야기와 감성을 담아
+오래도록 사랑받는 공간을 만들어갑니다.`;
+
 export function About() {
+  const { data: aboutContent } = useQuery({
+    queryKey: ['aboutContent'],
+    queryFn: aboutContentApi.getAll,
+  });
+
+  // 섹션별 콘텐츠 분리
+  const introContent = aboutContent?.filter(c => c.section === 'intro') || [];
+  const valuesContent = aboutContent?.filter(c => c.section === 'values') || [];
+  const processContent = aboutContent?.filter(c => c.section === 'process') || [];
+
+  // 소개글 (첫 번째 항목 사용)
+  const introText = introContent.length > 0 ? introContent[0].content : defaultIntro;
+
+  // 핵심 가치
+  const values = valuesContent.length > 0
+    ? valuesContent.map((item, index) => ({
+        number: String(index + 1).padStart(2, '0'),
+        title: item.title,
+        description: item.content,
+      }))
+    : defaultValues;
+
+  // 진행 과정
+  const processes = processContent.length > 0
+    ? processContent.map((item, index) => ({
+        number: String(index + 1).padStart(2, '0'),
+        title: item.title,
+        description: item.content,
+      }))
+    : defaultProcesses;
+
   return (
     <PageWrapper>
       <HeroSection>
@@ -228,10 +268,7 @@ export function About() {
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
         >
-          주식회사 정감공간은 사람들의 일상에 따뜻함을 전하는 감성적인 공간 인테리어 디자인을 추구합니다.
-          <br /><br />
-          우리는 단순히 보기 좋은 공간이 아닌, 그 공간에서 생활하는 사람들의 이야기와 감성을 담아
-          오래도록 사랑받는 공간을 만들어갑니다.
+          {introText}
         </IntroText>
 
         <SectionTitle>핵심 가치</SectionTitle>

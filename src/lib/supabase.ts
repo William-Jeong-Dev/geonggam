@@ -313,5 +313,124 @@ export const siteSettingsApi = {
   },
 };
 
+// 카테고리 관련 함수들
+export const categoryApi = {
+  // 모든 카테고리 조회
+  async getAll() {
+    if (!isSupabaseConfigured) return [];
+    const { data, error } = await supabase
+      .from('categories')
+      .select('*')
+      .order('display_order', { ascending: true });
+
+    if (error) throw error;
+    return data;
+  },
+
+  // 카테고리 생성
+  async create(category: { name: string; display_order: number }) {
+    if (!isSupabaseConfigured) throw new Error('Supabase가 설정되지 않았습니다.');
+    const { data, error } = await supabase
+      .from('categories')
+      .insert(category)
+      .select()
+      .single();
+
+    if (error) throw error;
+    return data;
+  },
+
+  // 카테고리 수정
+  async update(id: string, category: { name?: string; display_order?: number }) {
+    if (!isSupabaseConfigured) throw new Error('Supabase가 설정되지 않았습니다.');
+    const { data, error } = await supabase
+      .from('categories')
+      .update(category)
+      .eq('id', id)
+      .select()
+      .single();
+
+    if (error) throw error;
+    return data;
+  },
+
+  // 카테고리 삭제
+  async delete(id: string) {
+    if (!isSupabaseConfigured) throw new Error('Supabase가 설정되지 않았습니다.');
+    const { error } = await supabase
+      .from('categories')
+      .delete()
+      .eq('id', id);
+
+    if (error) throw error;
+  },
+};
+
+// 소개 페이지 콘텐츠 관련 함수들
+export const aboutContentApi = {
+  // 모든 콘텐츠 조회
+  async getAll() {
+    if (!isSupabaseConfigured) return [];
+    const { data, error } = await supabase
+      .from('about_content')
+      .select('*')
+      .order('display_order', { ascending: true });
+
+    if (error) throw error;
+    return data;
+  },
+
+  // 섹션별 콘텐츠 조회
+  async getBySection(section: string) {
+    if (!isSupabaseConfigured) return [];
+    const { data, error } = await supabase
+      .from('about_content')
+      .select('*')
+      .eq('section', section)
+      .order('display_order', { ascending: true });
+
+    if (error) throw error;
+    return data;
+  },
+
+  // 콘텐츠 생성
+  async create(content: { section: string; title: string; content: string; display_order: number }) {
+    if (!isSupabaseConfigured) throw new Error('Supabase가 설정되지 않았습니다.');
+    const { data, error } = await supabase
+      .from('about_content')
+      .insert(content)
+      .select()
+      .single();
+
+    if (error) throw error;
+    return data;
+  },
+
+  // 콘텐츠 수정
+  async update(id: string, content: Partial<import('../types').AboutContent>) {
+    if (!isSupabaseConfigured) throw new Error('Supabase가 설정되지 않았습니다.');
+    const { data, error } = await supabase
+      .from('about_content')
+      .update({ ...content, updated_at: new Date().toISOString() })
+      .eq('id', id)
+      .select()
+      .single();
+
+    if (error) throw error;
+    return data;
+  },
+
+  // 콘텐츠 삭제
+  async delete(id: string) {
+    if (!isSupabaseConfigured) throw new Error('Supabase가 설정되지 않았습니다.');
+    const { error } = await supabase
+      .from('about_content')
+      .delete()
+      .eq('id', id);
+
+    if (error) throw error;
+  },
+};
+
 // Supabase 설정 여부 확인 함수
 export const isSupabaseReady = () => isSupabaseConfigured;

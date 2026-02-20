@@ -72,6 +72,8 @@ const navItems = [
   { label: '대시보드', path: '/admin/dashboard' },
   { label: '히어로 슬라이드', path: '/admin/hero-slides' },
   { label: '포트폴리오 관리', path: '/admin/portfolio' },
+  { label: '카테고리 관리', path: '/admin/categories' },
+  { label: '소개 페이지', path: '/admin/about' },
   { label: '문의 관리', path: '/admin/inquiries' },
   { label: '사이트 설정', path: '/admin/settings' },
 ];

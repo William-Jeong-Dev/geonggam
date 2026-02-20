@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import styled from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
-import { portfolioApi, storageApi } from '../../lib/supabase';
+import { portfolioApi, storageApi, categoryApi } from '../../lib/supabase';
 import { Button } from '../../components/common/Button';
 import { theme } from '../../styles/GlobalStyles';
 import { Portfolio } from '../../types';
@@ -255,8 +255,6 @@ const EmptyState = styled.div`
   color: ${theme.colors.secondary};
 `;
 
-const categories = ['주거', '상업', '오피스', '기타'];
-
 interface FormData {
   title: string;
   description: string;
@@ -268,7 +266,7 @@ interface FormData {
 const initialFormData: FormData = {
   title: '',
   description: '',
-  category: '주거',
+  category: '',
   images: [],
   is_published: false,
 };
@@ -284,6 +282,13 @@ export function PortfolioManage() {
     queryKey: ['admin', 'portfolios'],
     queryFn: portfolioApi.getAll,
   });
+
+  const { data: categoriesData } = useQuery({
+    queryKey: ['categories'],
+    queryFn: categoryApi.getAll,
+  });
+
+  const categories = categoriesData?.map(c => c.name) || ['주거', '상업', '오피스', '기타'];
 
   const createMutation = useMutation({
     mutationFn: (data: FormData) => portfolioApi.create(data),
