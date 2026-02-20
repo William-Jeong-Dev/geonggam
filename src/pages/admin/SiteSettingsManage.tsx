@@ -105,18 +105,6 @@ const RemoveButton = styled.button`
   }
 `;
 
-const Input = styled.input`
-  width: 100%;
-  padding: 0.75rem;
-  border: 1px solid ${theme.colors.border};
-  font-size: 1rem;
-
-  &:focus {
-    outline: none;
-    border-color: ${theme.colors.primary};
-  }
-`;
-
 const RangeWrapper = styled.div`
   display: flex;
   align-items: center;
