@@ -74,6 +74,7 @@ const navItems = [
   { label: '포트폴리오 관리', path: '/admin/portfolio' },
   { label: '카테고리 관리', path: '/admin/categories' },
   { label: '소개 페이지', path: '/admin/about' },
+  { label: '푸터 설정', path: '/admin/footer' },
   { label: '문의 관리', path: '/admin/inquiries' },
   { label: '사이트 설정', path: '/admin/settings' },
 ];

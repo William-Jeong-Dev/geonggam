@@ -21,6 +21,7 @@ import { InquiryManage } from './pages/admin/InquiryManage';
 import { SiteSettingsManage } from './pages/admin/SiteSettingsManage';
 import { CategoryManage } from './pages/admin/CategoryManage';
 import { AboutManage } from './pages/admin/AboutManage';
+import { FooterManage } from './pages/admin/FooterManage';
 
 // Error Boundary
 interface ErrorBoundaryState {
@@ -106,6 +107,7 @@ function App() {
             <Route path="/admin/settings" element={<SiteSettingsManage />} />
             <Route path="/admin/categories" element={<CategoryManage />} />
             <Route path="/admin/about" element={<AboutManage />} />
+            <Route path="/admin/footer" element={<FooterManage />} />
           </Route>
           </Routes>
         </BrowserRouter>
