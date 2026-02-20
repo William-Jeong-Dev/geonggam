@@ -29,6 +29,7 @@ const CompanyInfo = styled.div`
     font-size: 0.875rem;
     color: rgba(255, 255, 255, 0.7);
     line-height: 1.8;
+    white-space: pre-line;
   }
 `;
 
